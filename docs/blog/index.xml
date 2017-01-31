@@ -7,8 +7,212 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright 2017 Mike Lloyd</copyright>
-    <lastBuildDate>Sat, 28 Jan 2017 15:15:02 -0800</lastBuildDate>
+    <lastBuildDate>Mon, 30 Jan 2017 17:46:38 -0800</lastBuildDate>
     <atom:link href="https://mxplusb.github.io/blog/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Graphing Gas Prices in Colorado</title>
+      <link>https://mxplusb.github.io/blog/blog/colorado-gas-prices/</link>
+      <pubDate>Mon, 30 Jan 2017 17:46:38 -0800</pubDate>
+      
+      <guid>https://mxplusb.github.io/blog/blog/colorado-gas-prices/</guid>
+      <description>
+
+&lt;h2 id=&#34;setting-up-the-rig&#34;&gt;Setting Up the Rig&lt;/h2&gt;
+
+&lt;p&gt;I&amp;rsquo;m a lurker. There, I said it. I&amp;rsquo;m sorry, I can&amp;rsquo;t help myself somtimes. I lurk &lt;a href=&#34;https://reddit.com/r/dataisbeautiful&#34;&gt;/r/dataisbeautiful&lt;/a&gt; all the time&amp;hellip;I just really like graphs. They are fun, they look cool, and they&amp;rsquo;re just all around neat.&lt;/p&gt;
+
+
+&lt;figure &gt;
+    
+        &lt;img src=&#34;https://media.giphy.com/media/POjnJ94jaXPSU/giphy.gif&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;They&amp;rsquo;re fun, they can represent really cool data, and they can also help you understand data. Even a rendering of data, not just a representative graph, can change the way data is understood. When filming the movie &lt;a href=&#34;https://en.wikipedia.org/wiki/Interstellar_(film)&#34;&gt;Interstellar&lt;/a&gt;, they consulted well-known physicist Kip Thorne to assist with the proper rendering of Gargantua, the spinning black hole in the film. One of the most interesting discoveries was made:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;“I never expected [Gargantua to look like that],” Thorne says. “Eugénie [von Tunzelmann] just did the simulations and said, ‘Hey, this is what I got.’ It was just amazing.”
+&amp;ndash;&lt;a href=&#34;https://www.wired.com/2014/10/astrophysics-interstellar-black-hole/&#34;&gt;Wired Magazine&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When a renown physicist is caught off guard by a data visualization, you know data visualizations have lots of potential. I&amp;rsquo;m going to talk a little bit about how I graphed all the gasoline prices in Colorado, U.S., the tools used, and share the code.&lt;/p&gt;
+
+&lt;h4 id=&#34;tools&#34;&gt;Tools&lt;/h4&gt;
+
+&lt;p&gt;To facilitate easy use, I originally wrote all of this in a &lt;a href=&#34;https://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/what_is_jupyter.html&#34;&gt;Jupyter Notebook&lt;/a&gt; to keep things much easier to see, and it was really nice. I&amp;rsquo;ll be pasting the raw code, but it should be easy to copy from here. This is all in Python, and the notebook originally was hosted on Microsoft&amp;rsquo;s &lt;a href=&#34;https://studio.azureml.net/&#34;&gt;Azure Machine Learning Studio&lt;/a&gt; (AMLS).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Libraries:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://pandas.pydata.org/&#34;&gt;Pandas&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://plot.ly/python/&#34;&gt;Plot.ly&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Azure/Azure-MachineLearning-ClientLibrary-Python&#34;&gt;AzureML&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Data Source: &lt;a href=&#34;https://data.colorado.gov/Transportation/Gasoline-prices-in-Colorado/8pk9-mh2i&#34;&gt;Colorado Information Marketplace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;bringing-the-equipment-on-site&#34;&gt;Bringing the Equipment On-site&lt;/h2&gt;
+
+&lt;p&gt;To start, let&amp;rsquo;s go ahead with the &lt;code&gt;import&lt;/code&gt;s.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import pandas as pd
+import plotly.graph_objs as go
+
+from plotly.offline import iplot, init_notebook_mode
+
+# this is required by plotly for offline use in notebooks.
+init_notebook_mode()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Azure ML Studio is still in beta, and external network access is not allowed. When you intialise  &lt;code&gt;plotly&lt;/code&gt; for the first time, it&amp;rsquo;s going to So, by RTFM, I learned that I had to upload my data set, then create an access key for it. If you &lt;a href=&#34;https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-python-data-access&#34;&gt;RTFM&lt;/a&gt;, they cover how to create an access key. The UI will auto generate one for you, and it&amp;rsquo;ll look something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;ws = Workspace(
+    # leave it to Microsoft to use single quotes...you bastards.
+    workspace_id=&#39;...&#39;,
+    authorization_token=&#39;...&#39;,
+    endpoint=&#39;https://studioapi.azureml.net&#39;
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, to grab the dataset from our data store in AMLS:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# the azureml library has a cool builtin function that will take CSV data from the data store and convert it to a pandas DataFrame for us. hashtag  nifty!
+ds = ws.datasets[&#39;Gasoline_prices_in_Colorado.csv&#39;]
+df = ds.to_dataframe()
+
+# we&#39;re then creating an average of all the all the values in all the columns. you&#39;ll see how this comes into play later.
+df[&amp;quot;avg&amp;quot;] = df.mean(axis=1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once we have our data, we need to extract each grade of fuel, so we can draw a scatter graphing object.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;premium_gas = go.Scatter(
+    name=&amp;quot;Premium&amp;quot;,
+    x=df[&amp;quot;date&amp;quot;],
+    y=df[&amp;quot;premiumGasPrice&amp;quot;],
+    mode=&amp;quot;lines&amp;quot;,
+    marker=dict(color=&amp;quot;444&amp;quot;),
+    line=dict(width=0),
+    fillcolor=&#39;rgba(68, 68, 68, 0.3)&#39;,
+    fill=&#39;tonexty&#39;
+)
+
+average_gas = go.Scatter(
+    name=&amp;quot;Average&amp;quot;,
+    x=df[&amp;quot;date&amp;quot;],
+    y=df[&amp;quot;avg&amp;quot;],
+    mode=&amp;quot;lines&amp;quot;,
+    line=dict(color=&#39;rgb(47, 13, 44)&#39;),
+    fillcolor=&#39;rgba(68, 68, 68, 0.3)&#39;,
+    fill=&#39;tonexty&#39;
+)
+
+regular_gas = go.Scatter(
+    name=&amp;quot;Regular&amp;quot;,
+    x=df[&amp;quot;date&amp;quot;],
+    y=df[&amp;quot;regularGasPrice&amp;quot;],
+    marker=dict(color=&amp;quot;444&amp;quot;),
+    line=dict(width=0),
+    mode=&#39;lines&#39;
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, you may have noticed, some of the parameters are different between the three of them. If you look at the data found in the DataFrame:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;           date allGradesGasPrice  \
+845  01/01/2001             $1.47   
+472  01/01/2007             $2.21   
+606  01/02/2006             $2.21   
+
+    regularGasPrice midgradeGasPrice  \
+845           $1.42            $1.54   
+472           $2.17            $2.28   
+606           $2.17            $2.27   
+
+    premiumGasPrice  
+845           $1.64  
+472           $2.38  
+606           $2.38 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can see there is a high, &lt;code&gt;premiumGasPrice&lt;/code&gt;, and a low, &lt;code&gt;regularGasPrice&lt;/code&gt;. With that, we can expand our graph to look a) more visually pleasing, and b) better represent the data. The type of graph we&amp;rsquo;re building is called an &lt;a href=&#34;https://en.wikipedia.org/wiki/Error_bar&#34;&gt;Error Bar&lt;/a&gt;. More specifically, we&amp;rsquo;re creating a continuous error bar graph, as the data is not missing any fields. Now, normally an error bar graph is designed to show a standard deviation of error in the data. While our data is exact, with no margin of error, we&amp;rsquo;re actually graphing the disparities of the gas prices between regular grade and premium grade gasoline. I&amp;rsquo;ll explain the why at the end, once you seen it.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s go ahead and create a layout. See comments in-line.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# this is our list our scatter plots.
+data = [regular_gas, average_gas, premium_gas]
+
+# we&#39;re creating a new layout, with time controls.
+layout = go.Layout(
+    yaxis=dict(
+        # title the graph, and create a nice number format.
+        title=&amp;quot;Gasoline Prices in Colorado&amp;quot;,
+        hoverformat=&amp;quot;$,.2f&amp;quot;
+    ),
+    xaxis=dict(
+        # plotly.graph_objs.Layout().rangeselector allows us
+        # zoom in on the data. more reading: 
+        # https://plot.ly/python/range-slider/
+        rangeselector=dict(
+            buttons=list([
+                # so we can sorta data from the last month.
+                dict(count=1,
+                     label=&#39;1m&#39;,
+                     step=&#39;month&#39;,
+                     stepmode=&#39;backward&#39;),
+                # so we can sorta data from the last 6 months.
+                dict(count=6,
+                     label=&#39;6m&#39;,
+                     step=&#39;month&#39;,
+                     stepmode=&#39;backward&#39;),
+                # so we can sorta data from the last year.
+                dict(count=1,
+                     label=&#39;YTD&#39;,
+                     step=&#39;year&#39;,
+                     stepmode=&#39;todate&#39;),
+                dict(count=1,
+                     label=&#39;1y&#39;,
+                     step=&#39;year&#39;,
+                     stepmode=&#39;backward&#39;),
+                dict(step=&#39;all&#39;)
+            ])
+        ),
+        rangeslider=dict(),
+        type=&#39;date&#39;
+    ),
+    # we don&#39;t need to see the legend as you can hover over the lines.
+    showlegend=False
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now that we&amp;rsquo;ve created all three scatter plots (aka, lines), we need to create a figure, and then plot it!&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;fig = {&amp;quot;data&amp;quot;: data, &amp;quot;layout&amp;quot;: layout}
+iplot(fig)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It should look something like this:&lt;/p&gt;
+
+
+&lt;figure &gt;
+    &lt;a href=&#34;https://plot.ly/~mxplusb/1#plot&#34;&gt;
+        &lt;img src=&#34;https://i.imgur.com/s4W3ajc.png&#34; /&gt;
+    &lt;/a&gt;
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Now, yours will look a little different from mine. I did some post-processing on Plot.ly and made it look more presentable so it would be acceptable by &lt;a href=&#34;https://reddit.com/r/dataisbeautiful&#34;&gt;/r/dataisbeautiful&lt;/a&gt;. If you click on the image, you can see my final result.&lt;/p&gt;
+
+&lt;h2 id=&#34;pumping-the-oil&#34;&gt;Pumping the Oil&lt;/h2&gt;
+
+&lt;p&gt;So now that we&amp;rsquo;ve visualised our data, let&amp;rsquo;s look at it. You should always humbly admire your work. In this case, let&amp;rsquo;s look at a little analysis. You&amp;rsquo;ll notice, data started in the year 2000. The US Energy Information Administration, the original data source, either does not make the data public or doesn&amp;rsquo;t have data before 2000, at least for Colorado.&lt;/p&gt;
+
+&lt;p&gt;What do you see in your data?&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Who, What, Why, and How</title>
@@ -22,7 +226,7 @@
 
 &lt;p&gt;I&amp;rsquo;m terrible at blogging, there is no doubt about it. I have struggled for many years with it, but now I have hit a point in my career where having a personal blog is recommended, and it&amp;rsquo;s best for me to suck it up and maintain one.&lt;/p&gt;
 
-&lt;p&gt;With that in mind, I figured I would go into some details on how this blog is built. Who, I guess is irrelevant (just read my about page!), so I&amp;rsquo;ll talk about What I used, Why I used it, and How I use it. When I titled this, I was going to introduce myself, but I ended up moving that to the About page, as well my industry&amp;rsquo;s standard disclaimer of &lt;code&gt;this is mine, not representative of my employer, blah blah blah&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;With that in mind, I figured I would go into some details on how this blog is built. Who, I guess is irrelevant (just read my &lt;a href=&#34;https://mxplusb.github.io/blog/about/&#34;&gt;about&lt;/a&gt; page!), so I&amp;rsquo;ll talk about What I used, Why I used it, and How I use it. When I titled this, I was going to introduce myself, but I ended up moving that to the About page, as well my industry&amp;rsquo;s standard disclaimer of &lt;code&gt;this is mine, not representative of my employer, blah blah blah&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&#34;the-empire-strikes-back&#34;&gt;The Empire Strikes Back&lt;/h2&gt;
 
