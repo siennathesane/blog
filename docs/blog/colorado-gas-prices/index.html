@@ -45,7 +45,7 @@
 
 
 <meta itemprop="dateModified" content="2017-01-30T17:46:38-08:00" />
-<meta itemprop="wordCount" content="965">
+<meta itemprop="wordCount" content="977">
 
 
 
@@ -141,7 +141,7 @@ from plotly.offline import iplot, init_notebook_mode
 init_notebook_mode()
 </code></pre>
 
-<p>Azure ML Studio is still in beta, and external network access is not allowed. When you intialise  <code>plotly</code> for the first time, it&rsquo;s going to So, by RTFM, I learned that I had to upload my data set, then create an access key for it. If you <a href="https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-python-data-access">RTFM</a>, they cover how to create an access key. The UI will auto generate one for you, and it&rsquo;ll look something like this:</p>
+<p>Azure ML Studio is still in beta, and external network access is not allowed. When you intialise  <code>plotly</code> for the first time, it&rsquo;s going to compile the <code>matplotlib</code> fonts, you&rsquo;ll see a warning, this is expected behaviour. So, by RTFM, I learned that I had to upload my data set, then create an access key for it. If you <a href="https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-python-data-access">RTFM</a>, they cover how to create an access key. The UI will auto generate one for you, and it&rsquo;ll look something like this:</p>
 
 <pre><code class="language-python">ws = Workspace(
     # leave it to Microsoft to use single quotes...you bastards.
