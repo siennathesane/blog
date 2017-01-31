@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on mxplusb</title>
+    <link>http://example.org/blog/index.xml</link>
+    <description>Recent content in Blogs on mxplusb</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright 2017 Mike Lloyd</copyright>
+    <lastBuildDate>Sat, 28 Jan 2017 15:15:02 -0800</lastBuildDate>
+    <atom:link href="http://example.org/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Who, What, Why, and How</title>
+      <link>http://example.org/blog/the-making-of-this/</link>
+      <pubDate>Sat, 28 Jan 2017 15:15:02 -0800</pubDate>
+      
+      <guid>http://example.org/blog/the-making-of-this/</guid>
+      <description>
+
+&lt;h2 id=&#34;a-new-hope&#34;&gt;A New Hope&lt;/h2&gt;
+
+&lt;p&gt;I&amp;rsquo;m terrible at blogging, there is no doubt about it. I have struggled for many years with it, but now I have hit a point in my career where having a personal blog is recommended, and it&amp;rsquo;s best for me to suck it up and maintain one.&lt;/p&gt;
+
+&lt;p&gt;With that in mind, I figured I would go into some details on how this blog is built. Who, I guess is irrelevant (just read my about page!), so I&amp;rsquo;ll talk about What I used, Why I used it, and How I use it. When I titled this, I was going to introduce myself, but I ended up moving that to the About page, as well my industry&amp;rsquo;s standard disclaimer of &lt;code&gt;this is mine, not representative of my employer, blah blah blah&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-empire-strikes-back&#34;&gt;The Empire Strikes Back&lt;/h2&gt;
+
+&lt;p&gt;In regards to what I used, I actually used a static website generator. I have tried using a fully-featured CMS engine, like &lt;a href=&#34;https://wordpress.org/&#34;&gt;WordPress&lt;/a&gt;, &lt;a href=&#34;https://medium.com/&#34;&gt;Medium&lt;/a&gt;, or &lt;a href=&#34;https://ghost.org/&#34;&gt;Ghost&lt;/a&gt;. While I thought all of them were pretty spiffy, I felt it was entirely too much for me to cope with. I wanted control, I wanted to host it myself, and I wanted to be able to treat my blog like code. Blogging as Code(&lt;sup&gt;TM&lt;/sup&gt;). I have tried &lt;a href=&#34;https://jekyllrb.com/&#34;&gt;Jekyll&lt;/a&gt; in the past, and it was alright; it had one major flaw, though: &lt;em&gt;IT IS WRITTEN IN RUBY&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;For those of you that don&amp;rsquo;t know me, I have a deep set disgust for most things Ruby. While Ruby is fine, and it is interpreted similar to Python, I can&amp;rsquo;t get over the syntax. I feel like I&amp;rsquo;m programming like a child with it&amp;rsquo;s simplistic, expressive language. It&amp;rsquo;s slow, and any form of parallelism or concurrency is just&amp;hellip;challenging.&lt;/p&gt;
+
+&lt;p&gt;So Jekyll was out the door, time to search for something I could contribute to, if I ever had the desire. I&amp;rsquo;m a huge fan of Google&amp;rsquo;s &lt;a href=&#34;https://golang.org&#34;&gt;Go&lt;/a&gt;, so I started looking for something like Jekyll, but in Go. I didn&amp;rsquo;t have to look far, I stumbled across &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;. Their tag line: &lt;code&gt;Make the Web Fun Again&lt;/code&gt;. Perfect, I like fun. Especially as I&amp;rsquo;m not a UI wizard&amp;hellip;those mystical powers reside with others. Looking into Hugo, I found it was produced by &lt;a href=&#34;http://spf13.com/&#34;&gt;spf13&lt;/a&gt;, who writes one of my favourite command line client interfaces, &lt;a href=&#34;https://github.com/spf13/cobra&#34;&gt;cobra&lt;/a&gt;. I was exceedingly pleased, and I knew he experience would be a fun one, both to learn and to maintain.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Yes We Can.&lt;/p&gt;
+
+&lt;p&gt;&amp;ndash;&lt;cite&gt;Barack Obama&lt;/cite&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;return-of-the-jedi&#34;&gt;Return of the Jedi&lt;/h2&gt;
+
+&lt;p&gt;I searched long and hard for the right &lt;a href=&#34;http://themes.gohugo.io/&#34;&gt;theme&lt;/a&gt;. I&amp;rsquo;m picky about presentation, and I feel first impressions are the most important. I tried so many different themes, for awhile. After lots of &lt;em&gt;close, but no cigar&lt;/em&gt; tries, I finally settled on this one, &lt;a href=&#34;http://themes.gohugo.io/hugo-theme-cactus-plus/&#34;&gt;Cactus Plus&lt;/a&gt;. It&amp;rsquo;s simplistic, fast (all of Hugo is fast, lol), the text is okay, and it&amp;rsquo;s overall, a decent theme. I like the &lt;a href=&#34;https://highlightjs.org/&#34;&gt;Highlight.js&lt;/a&gt; markdown renderer, it produces nice contrast to the white style. This is the Why.&lt;/p&gt;
+
+&lt;p&gt;Python:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from sys import stdout; stdout.write(&amp;quot;See? Looks good.&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import &amp;quot;fmt&amp;quot;
+
+func main() {
+    fmt.Println(&amp;quot;See? Still looks good.&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;C:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;lt;stdio.h&amp;gt;
+int main() {
+    printf(&amp;quot;Still going strong.&amp;quot;);
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;C#:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;using System;
+
+class Program
+{
+    static void Main()
+    {
+        string works = &amp;quot;Man, this highlighter is super awesome.&amp;quot;;
+        Console.WriteLine(works);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I really like it, it&amp;rsquo;s clean. Now, I have highlight.js configured to use the &lt;a href=&#34;https://github.com/bulenkov/Darcula&#34;&gt;Darcula&lt;/a&gt; theme from Konstantin Bulenkov. I use various &lt;a href=&#34;https://www.jetbrains.com/&#34;&gt;Jetbrains&lt;/a&gt; editors, and they all use the Darcula theme. I feel it&amp;rsquo;s easier on the eyes. I&amp;rsquo;ll go over how I integrated Hugo with WebStorm in a later post.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-force-awakens&#34;&gt;The Force Awakens&lt;/h2&gt;
+
+&lt;p&gt;How I made this is pretty simple, I mostly just followed the directions and Read The F***ing Manual. One of my favourite sayings:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Real men don&amp;rsquo;t need instructions.&lt;/p&gt;
+
+&lt;p&gt;&amp;ndash;&lt;cite&gt;Tim &amp;ldquo;The Toolman&amp;rdquo; Taylor&lt;/cite&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Is so unbelievably inaccurate it&amp;rsquo;s laughable, lol. I read manuals all the time. API, vehicle, toaster (oh yes),  and many other manuals. Without manuals, I would be helpless. I would highly recommend reading the &lt;a href=&#34;https://gohugo.io/overview/introduction/&#34;&gt;Hugo manual&lt;/a&gt; if you want to create your own.&lt;/p&gt;
+
+&lt;p&gt;That&amp;rsquo;s about it, for now. Thanks!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
