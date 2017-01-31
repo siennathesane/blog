@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>mxplusb</title>
-    <link>http://example.org/index.xml</link>
+    <link>https://mxplusb.github.io/blog/index.xml</link>
     <description>Recent content on mxplusb</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright 2017 Mike Lloyd</copyright>
     <lastBuildDate>Mon, 30 Jan 2017 15:25:58 -0800</lastBuildDate>
-    <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://mxplusb.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title></title>
-      <link>http://example.org/about/</link>
+      <link>https://mxplusb.github.io/blog/about/</link>
       <pubDate>Mon, 30 Jan 2017 15:25:58 -0800</pubDate>
       
-      <guid>http://example.org/about/</guid>
+      <guid>https://mxplusb.github.io/blog/about/</guid>
       <description>&lt;p&gt;First, let&amp;rsquo;s start this off with a short introduction. My name is Mike Lloyd, and I am currently a Senior Solutions Architect with &lt;a href=&#34;https://pivotal.io/&#34;&gt;Pivotal Software, Inc&lt;/a&gt;. I would like to first start off by stating this blog does not, in any way, represent &lt;a href=&#34;https://www.delltechnologies.com/en-us/index.htm&#34;&gt;Dell Technologies&amp;rsquo;&lt;/a&gt; (or any of their holdings) opinions , their business practices, their IP, and any content contained in this blog, regardless of whichever post, is of my own opinion and of my own devices. You will likely see many posts regarding integrations with products derived from their IP.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Disclaimer: You may or may not stumble upon various instances of profane language. I feel being able to speak my mind honestly (which is usually just stream of consciousness) is important.&lt;/strong&gt;&lt;/p&gt;
@@ -42,10 +42,10 @@
     
     <item>
       <title>Who, What, Why, and How</title>
-      <link>http://example.org/blog/the-making-of-this/</link>
+      <link>https://mxplusb.github.io/blog/blog/the-making-of-this/</link>
       <pubDate>Sat, 28 Jan 2017 15:15:02 -0800</pubDate>
       
-      <guid>http://example.org/blog/the-making-of-this/</guid>
+      <guid>https://mxplusb.github.io/blog/blog/the-making-of-this/</guid>
       <description>
 
 &lt;h2 id=&#34;a-new-hope&#34;&gt;A New Hope&lt;/h2&gt;
